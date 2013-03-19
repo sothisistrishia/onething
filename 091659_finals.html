@@ -1,0 +1,77 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body style="background-color:#E8E8E8">
+<center>
+<h1>I. User's information</h1>
+<div id="content">
+</div>
+<br>
+<div id="more"></div>
+<p>
+<h1>II. Pictures</h1>
+<br>Cover photo
+<div id="photos"><img id="cover"> </div>
+<h1>III. Social Aspect</h1>
+<br>Liked pages:
+<div id="likedpages"></div>
+</center>
+</body>
+
+<script>
+
+$(document).ready(function () {
+    $.getJSON("http://graph.facebook.com/tgerobiese/", function (data) {
+        var name = data["name"];
+        var gender = data["gender"];
+        $('<h2>User name: ' + name + '</h2><h3>Gender: ' + gender + '</h3>').appendTo("#content");
+        var bd = data["birthday"];
+        $('<h2>Birthday: ' + data["birthday"] + '</h3>').appendTo("#more");
+        var loc = data["location"];
+        $('<h2>Location: ' + loc.name + '</h3>').appendTo("#more");
+    })
+ 
+
+    $.getJSON("https://graph.facebook.com/tgerobiese?fields=email", function (data) {
+        var e = data["email"];
+    $('<h2>Email: ' + e + '</h3>').appendTo("#more");
+    })
+
+
+    $.getJSON("https://graph.facebook.com/tgerobiese?fields=about,age_range,birthday,email,location,languages/access_token=AAACEdEose0cBAFNdk0AH1S18BnOIYQWdD3wZA2Ts8TJbL84HhyPDYMrtTcMF6z4bhYWlW6RcBudcIEVXkqqMdGOnjmVtGmeDcT2JXugZDZD", function (data) {
+        var e = data["email"];
+    $('<h2>Email address: ' + e + '</h2>').appendTo("#more");
+        var loc = data["location"];
+    $('<h2>Location: ' + loc.name + '</h3>').appendTo("#more");
+        var religion = data["religion"];
+    $('<h2>Religion: ' + religion + '</h3>').appendTo("#more");var age = data["age_range"];
+        var age = data["age"];
+    $('<h2>Age: ' + age.max + '</h3>').appendTo("#more");
+
+    })
+
+    $.getJSON("https://graph.facebook.com/tgerobiese?fields=religion?access_token=AAACEdEose0cBANQq36OMxM50cuaXZAgJazOMq4BsQ95ML8tYURigJ5mIrzGIUnNHcN3s0rJyvm9KCbYW7A8myZAZAXHFqCRMicgTzSKwwZDZD", function (data) {
+        var rel = data["religion"];
+    $('<h2>Religion: ' + rel + '</h2>').appendTo("#more");
+    })
+
+    $.getJSON("http://graph.facebook.com/tgerobiese/likes?fields=cover&access_token=AAACEdEose0cBAFNdk0AH1S18BnOIYQWdD3wZA2Ts8TJbL84HhyPDYMrtTcMF6z4bhYWlW6RcBudcIEVXkqqMdGOnjmVtGmeDcT2JXugZDZD", function (data) {
+        var img = data["source"];
+    $("#cover")[0].src = img;
+    })
+
+    $.getJSON("http://graph.facebook.com/tgerobiese?fields=interests?access_token=AAACEdEose0cBANQq36OMxM50cuaXZAgJazOMq4BsQ95ML8tYURigJ5mIrzGIUnNHcN3s0rJyvm9KCbYW7A8myZAZAXHFqCRMicgTzSKwwZDZD", function    (response) {
+  		$.each(response.data, function (i, interests) {
+    $('<br> ' + interests.name + '<br>').appendTo("#interests");
+    })})
+ 
+    $.getJSON("https://graph.facebook.com/tgerobiese/likes?access_token=AAACEdEose0cBAFNdk0AH1S18BnOIYQWdD3wZA2Ts8TJbL84HhyPDYMrtTcMF6z4bhYWlW6RcBudcIEVXkqqMdGOnjmVtGmeDcT2JXugZDZD", function (response) {
+    $.each(response.data, function (i,page) {
+	$('<br>' + page.name + '<br>').appendTo("#likedpages");
+    })
+	})
+
+})
+</script>
+</html>
